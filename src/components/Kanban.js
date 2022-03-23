@@ -1,24 +1,17 @@
 import './kanban.scss'
 import {DragDropContext,Draggable,Droppable} from 'react-beautiful-dnd'
-import mockData from '../../src/mockData'
 import { useState } from 'react'
 import Card from '../card/Card'
-import useFetch from '../useFetch'
 import { useEffect } from 'react'
-import axios, { Axios } from 'axios'
+import axios from 'axios'
  function  Kanban() {
      const [data, setData]= useState([])
-     const [all,setAll]=useState([]) 
-    //  const address=process.env.JSON_ADDRESS;
-    //  console.log(address)
    useEffect(()=>{
        axios.get('http://localhost:3000/lists')
        .then(res=> res.data)
        .then(data=>setData(data))
-      
    },[])
     const onDragEnd= async (result) =>{
-
 if(!result.destination) return
 const {source,destination}=result
 if(source.droppableId !== destination.droppableId){
@@ -33,9 +26,6 @@ if(source.droppableId !== destination.droppableId){
     data[sourceColIndex].tasks=sourceTask
     data[destinationColIndex].tasks=destinationTask
     setData(data)
-    console.log("dragged block", result.source.droppableId)
-    console.log("dropped block",result.destination.droppableId)
-    console.log("dragged item",result.draggableId)
     let new_block=data[parseInt(result.source.droppableId[6])]
      axios.put(`http://localhost:3000/lists/${result.source.droppableId}`,new_block)
      let updated_block=data[parseInt(result.destination.droppableId[6])]
@@ -44,12 +34,17 @@ if(source.droppableId !== destination.droppableId){
 }
   return (    
     <DragDropContext onDragEnd={onDragEnd}>
-        <div className='kanban'>
+        <header>
+            <p>
+                <strong>Kanban Board</strong>
+            </p>
+        </header>
+        <section className='kanban'>
             {
                 data.map(section =>(
                     <Droppable key={section.id} droppableId={section.id}>
                         {(provided)=>(
-                            <div {...provided.droppableProps} className='kanban_section' ref={provided.innerRef}>
+                            <article {...provided.droppableProps} className='kanban_section' ref={provided.innerRef}>
                                 <div className='kanban_section_title'>
                                     {section.title}
                                 </div>
@@ -68,14 +63,13 @@ if(source.droppableId !== destination.droppableId){
                                     ))}
                                     {provided.placeholder}
                                     </div>
-                                    </div>
+                                    </article>
                         )}
                         </Droppable>
                 ))
             }
-            </div>
+            </section>
     </DragDropContext>
   )
 }
-
 export default Kanban

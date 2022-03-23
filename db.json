@@ -5,6 +5,10 @@
       "title": "Product Backlog",
       "tasks": [
         {
+          "id": "5",
+          "title": "Learn CSS"
+        },
+        {
           "id": "8",
           "title": "Learn Angular"
         },
@@ -31,10 +35,6 @@
       "title": "To Do",
       "tasks": [
         {
-          "id": "5",
-          "title": "Learn CSS"
-        },
-        {
           "id": "3",
           "title": "Learn Micro-services"
         }
@@ -45,12 +45,12 @@
       "title": "In Progress",
       "tasks": [
         {
-          "id": "7",
-          "title": "Learn Vue"
-        },
-        {
           "id": "12",
           "title": "Learn Laravel"
+        },
+        {
+          "id": "2",
+          "title": "Learn Agile"
         },
         {
           "id": "10",
@@ -67,8 +67,8 @@
       "title": "Completed",
       "tasks": [
         {
-          "id": "2",
-          "title": "Learn Agile"
+          "id": "7",
+          "title": "Learn Vue"
         }
       ]
     }
