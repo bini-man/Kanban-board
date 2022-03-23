@@ -9,24 +9,8 @@
           "title": "Learn CSS"
         },
         {
-          "id": "8",
-          "title": "Learn Angular"
-        },
-        {
-          "id": "1",
-          "title": "Learn Git"
-        },
-        {
-          "id": "11",
-          "title": "Learn Node"
-        },
-        {
           "id": "6",
           "title": "Learn HTML"
-        },
-        {
-          "id": "9",
-          "title": "Learn React"
         }
       ]
     },
@@ -35,8 +19,16 @@
       "title": "To Do",
       "tasks": [
         {
-          "id": "3",
-          "title": "Learn Micro-services"
+          "id": "11",
+          "title": "Learn Node"
+        },
+        {
+          "id": "4",
+          "title": "Learn Javascript"
+        },
+        {
+          "id": "1",
+          "title": "Learn Git"
         }
       ]
     },
@@ -53,12 +45,12 @@
           "title": "Learn Agile"
         },
         {
-          "id": "10",
-          "title": "Learn Spring "
+          "id": "8",
+          "title": "Learn Angular"
         },
         {
-          "id": "4",
-          "title": "Learn Javascript"
+          "id": "10",
+          "title": "Learn Spring "
         }
       ]
     },
@@ -67,8 +59,16 @@
       "title": "Completed",
       "tasks": [
         {
+          "id": "9",
+          "title": "Learn React"
+        },
+        {
           "id": "7",
           "title": "Learn Vue"
+        },
+        {
+          "id": "3",
+          "title": "Learn Micro-services"
         }
       ]
     }

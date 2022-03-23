@@ -33,6 +33,7 @@ if(source.droppableId !== destination.droppableId){
 }
 }
   return (    
+      
     <DragDropContext onDragEnd={onDragEnd}>
         <header>
             <p>
@@ -48,8 +49,7 @@ if(source.droppableId !== destination.droppableId){
                                 <div className='kanban_section_title'>
                                     {section.title}
                                 </div>
-                              
-                                <div className='kanban_section_content'>
+                                                                <div className='kanban_section_content'>
                                     {section.tasks.map((task,index)=>(
                                         <Draggable key={task.id} draggableId={task.id} index={index}>
                                            {(provided,snapshot)=>(
