@@ -11,7 +11,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Button, TextField, Typography } from '@material-ui/core'
-import { red } from '@material-ui/core/colors';
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     modal: {
       display: 'flex',
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
      const [open, setOpen] = React.useState(false);
      const [titles,setTitles]=useState('');
      const [descs,setDescs]=useState('');
+     const navigate = useNavigate();
     let new_ticket;
      const handleOpen = () => {
        setOpen(true);
@@ -53,8 +54,9 @@ const useStyles = makeStyles((theme) => ({
         new_ticket.tasks.push({id:uuidv4(),title:titles,description:descs})
         console.log(new_ticket.tasks) 
         axios.put(`${url}/block_0`,new_ticket)
+        .then(window.location.reload(true) )
         })
-         
+        
      }
      const url='http://localhost:3000/lists'
    useEffect(()=>{
@@ -143,7 +145,9 @@ if(source.droppableId !== destination.droppableId){
                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={{...provided.draggableProps.style, opacity:snapshot.isDragging ? '0.5':'1'}}>
                                                     <Card>
                                                        <strong> {task.title}</strong><br/>
-                                                        <Button color='primary' variant='outlined'>More</Button>
+                                                        <Button color='primary' variant='outlined' onClick={()=>{
+                                navigate(`/detail/${task.id}/${task.title}/${task.description}`)
+                                                        }}>More</Button>
                                                     </Card>
                                                </div>
                                            )}
