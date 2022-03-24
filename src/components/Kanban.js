@@ -145,7 +145,7 @@ if(source.droppableId !== destination.droppableId){
                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={{...provided.draggableProps.style, opacity:snapshot.isDragging ? '0.5':'1'}}>
                                                     <Card>
                                                        <strong> {task.title}</strong><br/>
-                                                        <Button color='primary' variant='outlined' onClick={()=>{
+                                                        <Button color='default' variant='outlined' onClick={()=>{
                                 navigate(`/detail/${task.id}/${task.title}/${task.description}`)
                                                         }}>More</Button>
                                                     </Card>
