@@ -1,15 +1,74 @@
 import './kanban.scss'
 import {DragDropContext,Draggable,Droppable} from 'react-beautiful-dnd'
 import { useState } from 'react'
+import React from 'react';
 import Card from '../card/Card'
 import { useEffect } from 'react'
 import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import { Button, TextField, Typography } from '@material-ui/core'
+import { red } from '@material-ui/core/colors';
+const useStyles = makeStyles((theme) => ({
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      backgroundColor: '#3F51B5' ,
+      border: '9px solid #3F51B5',
+      boxShadow: theme.shadows[3],
+      padding: theme.spacing(2, 4, 3),
+    },
+    button:{
+        marginTop:'20px',
+        marginBottom:'20px'
+    }
+  }));
+  
  function  Kanban() {
      const [data, setData]= useState([])
+     const [loading,setLoading]=useState(true)
+     const [error,setEroor]=useState(null)
+     const classes = useStyles();
+     const [open, setOpen] = React.useState(false);
+     const [titles,setTitles]=useState('');
+     const [descs,setDescs]=useState('');
+    let new_ticket;
+     const handleOpen = () => {
+       setOpen(true);
+     };
+   
+     const handleClose = () => {
+       setOpen(false);
+     };
+     const handelpost = () =>{
+         axios.get(`${url}/block_0`)
+         .then(res=>{
+        new_ticket=res.data
+        new_ticket.tasks.push({id:uuidv4(),title:titles,description:descs})
+        console.log(new_ticket.tasks) 
+        axios.put(`${url}/block_0`,new_ticket)
+        })
+         
+     }
+     const url='http://localhost:3000/lists'
    useEffect(()=>{
-       axios.get('http://localhost:3000/lists')
-       .then(res=> res.data)
-       .then(data=>setData(data))
+       axios.get(url)
+       .then(res=> res.data
+        )
+       .then(data=>
+        {setData(data)
+            setLoading(false)
+        })
+        .catch(err=>{
+            setEroor(err.message)
+            setLoading(false)
+        })
    },[])
     const onDragEnd= async (result) =>{
 if(!result.destination) return
@@ -27,21 +86,49 @@ if(source.droppableId !== destination.droppableId){
     data[destinationColIndex].tasks=destinationTask
     setData(data)
     let new_block=data[parseInt(result.source.droppableId[6])]
-     axios.put(`http://localhost:3000/lists/${result.source.droppableId}`,new_block)
+     axios.put(`${url}/${result.source.droppableId}`,new_block)
      let updated_block=data[parseInt(result.destination.droppableId[6])]
-     axios.put(`http://localhost:3000/lists/${result.destination.droppableId}`,updated_block)
+     axios.put(`${url}/${result.destination.droppableId}`,updated_block)
 }
 }
-  return (    
-      
+  return (  
     <DragDropContext onDragEnd={onDragEnd}>
         <header>
             <p>
-                <strong>Kanban Board</strong>
+                <strong>Kanban Board</strong> <br/><br/>
             </p>
+            <Button className='create' variant='contained' color='primary' onClick={handleOpen}>Create Ticket</Button><br/><br/>
+            <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">Create Ticket</h2>
+            <p id="transition-modal-description">Fill the following information to create ticket</p><br/>
+            <form>
+                <Typography variant="h5" component="h5"  >Ticket title</Typography>
+                <TextField variant='outlined' required value={titles} onChange={(e)=>setTitles(e.target.value)} >ticket title</TextField>
+                <Typography variant="h5" component="h5">Ticket Description</Typography>
+                <TextField variant='outlined' multiline required value={descs}  onChange={(e)=>setDescs(e.target.value)}>ticket description</TextField>
+               <br/> <Button className={classes.button} onClick={handelpost} variant='outlined'>Create Ticket</Button>
+            </form>
+          </div>
+        </Fade>
+      </Modal>
         </header>
         <section className='kanban'>
-            {
+            {loading && <div>Loading the board .....</div>}
+            {error && <div>{error}</div>}
+            { data &&
                 data.map(section =>(
                     <Droppable key={section.id} droppableId={section.id}>
                         {(provided)=>(
@@ -55,7 +142,8 @@ if(source.droppableId !== destination.droppableId){
                                            {(provided,snapshot)=>(
                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={{...provided.draggableProps.style, opacity:snapshot.isDragging ? '0.5':'1'}}>
                                                     <Card>
-                                                        {task.title}
+                                                       <strong> {task.title}</strong><br/>
+                                                        <Button color='primary' variant='outlined'>More</Button>
                                                     </Card>
                                                </div>
                                            )}
@@ -69,6 +157,7 @@ if(source.droppableId !== destination.droppableId){
                 ))
             }
             </section>
+
     </DragDropContext>
   )
 }
