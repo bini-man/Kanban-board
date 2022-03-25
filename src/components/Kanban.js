@@ -19,15 +19,17 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
     },
     paper: {
-      backgroundColor: '#3F51B5' ,
-      border: '9px solid #3F51B5',
+      backgroundColor: '#FFFFFF' ,
+      border: '9px solid #FFFFFF',
       boxShadow: theme.shadows[3],
       padding: theme.spacing(2, 4, 3),
     },
     button:{
         marginTop:'20px',
-        marginBottom:'20px'
-    }
+        marginBottom:'20px',
+        background:'#0747A6'
+    },
+   
   }));
   
  function  Kanban() {
@@ -97,9 +99,9 @@ if(source.droppableId !== destination.droppableId){
     <DragDropContext onDragEnd={onDragEnd}>
         <header>
             <p>
-                <strong>Kanban Board</strong> <br/><br/>
+                <strong>Kanban Board</strong> 
             </p>
-            <Button className='create' variant='contained' color='primary' onClick={handleOpen}>Create Ticket</Button><br/><br/>
+            <Button className={classes.button} variant='contained'  onClick={handleOpen}>Create Ticket</Button>
             <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
