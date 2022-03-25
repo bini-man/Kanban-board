@@ -90,9 +90,13 @@ if(source.droppableId !== destination.droppableId){
     data[destinationColIndex].tasks=destinationTask
     setData(data)
     let new_block=data[parseInt(result.source.droppableId[6])]
+    let updated_block=data[parseInt(result.destination.droppableId[6])]
+
      axios.put(`${url}/${result.source.droppableId}`,new_block)
-     let updated_block=data[parseInt(result.destination.droppableId[6])]
-     axios.put(`${url}/${result.destination.droppableId}`,updated_block)
+     .then(res=>{
+      axios.put(`${url}/${result.destination.droppableId}`,updated_block)
+     })
+    
 }
 }
   return (  
